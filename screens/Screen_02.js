@@ -30,6 +30,16 @@ const Screen_02 = ({ route }) => {
   const { name } = route.params ? route.params : { name: "Guest" };
   const navagion = useNavigation();
   const [newData, setNewData] = useState(data);
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (text) => {
+    setSearch(text);
+    const filteredData = newData.filter((item) =>
+      item.title.toLowerCase().includes(text.toLowerCase())
+    );
+    setNewData(filteredData);
+  };
+
   const addJob = (job, id) => {
     if (id) {
       setNewData((prevData) =>
@@ -158,6 +168,8 @@ const Screen_02 = ({ route }) => {
             borderRadius: 10,
             marginVertical: 60,
           }}
+          value={search}
+          onChangeText={(text) => handleSearch(text)}
         />
       </View>
       {/* FLatList Todo */}

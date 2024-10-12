@@ -31,7 +31,7 @@ const Screen_03 = ({ route }) => {
         text2: "Job is required",
       });
     } else {
-      addJob(job, id);
+      addJob(id, job);
       Toast.show({
         type: "success",
         position: "top",
