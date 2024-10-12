@@ -19,7 +19,7 @@ const Screen_03 = ({ route }) => {
   const navigation = useNavigation();
   const [job, setJob] = useState(title);
   useEffect(() => {
-    setJob(title); // Cập nhật giá trị khi chuyển đến màn hình này
+    setJob(title);
   }, [title]);
 
   const handleButton = () => {
@@ -31,7 +31,7 @@ const Screen_03 = ({ route }) => {
         text2: "Job is required",
       });
     } else {
-      addJob(id, job);
+      addJob(job, id);
       Toast.show({
         type: "success",
         position: "top",
