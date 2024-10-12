@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   Image,
   ScrollView,
@@ -31,16 +32,18 @@ const Screen_03 = ({ route }) => {
         text2: "Job is required",
       });
     } else {
-      addJob(job, id);
       Toast.show({
         type: "success",
         position: "top",
         text1: "Success",
         text2: "Job is valid",
       });
-      navigation.goBack();
+      addJob(id, job);
+
+      navigation.navigate("Screen_02");
     }
   };
+
   return (
     <ScrollView style={styles.container}>
       {/* navigation and info */}
@@ -55,7 +58,7 @@ const Screen_03 = ({ route }) => {
         <View>
           <TouchableOpacity
             onPress={() => {
-              navigation.goBack();
+              navigation.navigate("Screen_02");
             }}
           >
             <Image source={require("../assets/data/Icon Button 12.png")} />
@@ -116,7 +119,7 @@ const Screen_03 = ({ route }) => {
             textAlign: "center",
           }}
         >
-          {id ? "EDIT YOUR JOB" : "ADD YOUR JOB"}
+          ADD YOUR JOB
         </Text>
       </View>
       {/* Input */}

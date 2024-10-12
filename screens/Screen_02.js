@@ -1,8 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { Button, FlatList, TouchableOpacity } from "react-native";
+import { Button, FlatList, TextInput, TouchableOpacity } from "react-native";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { TextInput } from "react-native-web";
 
 const Screen_02 = ({ route }) => {
   const data = [
@@ -27,34 +26,38 @@ const Screen_02 = ({ route }) => {
       title: "Learn React",
     },
   ];
-  const { name } = route.params ? route.params : { name: "Guest" };
-  const navagion = useNavigation();
+  const { name } = route.params ? route.params?.name : { name: "Guest" };
   const [newData, setNewData] = useState(data);
   const [search, setSearch] = useState("");
+  const navagion = useNavigation();
+
+  const addJob = (id, job) => {
+    if (id) {
+      setNewData((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, title: job } : item))
+      );
+    } else {
+      const newData = {
+        id: data.length + 1,
+        title: job,
+      };
+      setNewData((prev) => [...prev, newData]);
+    }
+  };
 
   const handleSearch = (text) => {
     setSearch(text);
+    if (text === "") {
+      setNewData(data);
+      return;
+    }
     const filteredData = newData.filter((item) =>
       item.title.toLowerCase().includes(text.toLowerCase())
     );
+
     setNewData(filteredData);
   };
 
-  const addJob = (job, id) => {
-    if (id) {
-      setNewData((prevData) =>
-        prevData.map((item) =>
-          item.id === id ? { ...item, title: job } : item
-        )
-      );
-    } else {
-      const newJob = {
-        id: newData.length + 1,
-        title: job,
-      };
-      setNewData((prevData) => [...prevData, newJob]);
-    }
-  };
   const renderTodoList = ({ item }) => {
     return (
       <View
@@ -80,9 +83,9 @@ const Screen_02 = ({ route }) => {
           <TouchableOpacity
             onPress={() => {
               navagion.navigate("Screen_03", {
-                id: item.id,
                 name: name,
                 addJob: addJob,
+                id: item.id,
                 title: item.title,
               });
             }}
@@ -112,7 +115,7 @@ const Screen_02 = ({ route }) => {
         <View>
           <TouchableOpacity
             onPress={() => {
-              navagion.goBack();
+              navagion.navigate("Screen_01");
             }}
           >
             <Image source={require("../assets/data/Icon Button 12.png")} />
@@ -180,7 +183,7 @@ const Screen_02 = ({ route }) => {
       >
         <FlatList
           data={newData}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id?.toString()}
           renderItem={renderTodoList}
         />
       </View>
